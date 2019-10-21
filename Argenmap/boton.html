@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Obtencion de datos</h1>
+<p> La latitud es:</p> <p id="lat"></p>  
+<p> La longitud es:</p> <p id="lon"></p>
+<p> El depto es:</p> <p id="depto"></p>
+<p> El municipio es:</p> <p id="muni"></p>
+<p> La provincia es:</p> <p id="prov"></p>
+
+
+<script>
+
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
+
+    var coord = prompt("latitud,"+"longitud"); // pedido de datos
+    var coordArr = coord.split(','); // paso a array
+    var lat = parseFloat(coordArr[0]);
+    var lon = parseFloat(coordArr[1]);
+    url = "https://apis.datos.gob.ar/georef/api/ubicacion?lat="+lat+"&lon="+lon; // completo la url
+    var json = httpGet(url); // get a la api
+    var obj = JSON.parse(json); // parse a txt
+    document.getElementById("lat").innerHTML = obj.ubicacion.lat;
+    document.getElementById("lon").innerHTML = obj.ubicacion.lon;
+    document.getElementById("depto").innerHTML = obj.ubicacion.departamento.nombre; // muestro datos limpios
+    document.getElementById("muni").innerHTML = obj.ubicacion.municipio.nombre;
+    document.getElementById("prov").innerHTML = obj.ubicacion.provincia.nombre;
+
+
+</script>
+</body>
+</html> 
