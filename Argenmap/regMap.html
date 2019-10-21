@@ -12,6 +12,10 @@
 
        <script src="Poligono_Regiones_gpx.js"></script>
 
+       <script src="Poligono_CABA_GBA_gpx.js"></script>
+
+       <script src="Poligono_CABA_GBA_GLP_gpx.js"></script>
+
        <script>
            var map = L.map('map').setView([-33, -65], 7);
            L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=PEfhgiKYelWbSwWuPals',{
@@ -83,9 +87,18 @@
                 }
 
                 geojson = L.geoJson(polReg, {
-                    onEachFeature: onEachFeature
+                    onEachFeature: onEachFeature,
+                    pane : 'mapPane'
                 }).addTo(map);
 
+                geojson = L.geoJson(polCABAGBA, {
+                    onEachFeature: onEachFeature,
+                    pane : 'popupPane'
+                }).addTo(map);
+
+                geojson = L.geoJson(polCABAGLP, {
+                    onEachFeature: onEachFeature
+                }).addTo(map);
        </script> 
     </body>
 </html>
