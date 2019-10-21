@@ -1,0 +1,91 @@
+<!DOCTYPE htmel>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+        <style>
+            #map {position: absolute; top: 0; bottom: 0; left: 0; right: 0;}
+        </style>
+    </head>
+    <body>
+       <div id = "map"></div>
+
+       <script src="Poligono_Regiones_gpx.js"></script>
+
+       <script>
+           var map = L.map('map').setView([-33, -65], 7);
+           L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=PEfhgiKYelWbSwWuPals',{
+               attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>',
+           }).addTo(map);
+           
+           var info = L.control();
+
+           info.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+           };
+           
+           info.update = function (props) {
+		        this._div.innerHTML = '<h4>Ubicacion</h4>' +  (props ?
+			        '<b>' + props.Name + '</b><br />'
+			        : 'Mueva el cursor sobre una región');
+            };
+
+            function style(feature) {
+                //alert(feature.properties.provincia);
+                return {
+                    weight: 2,
+                    opacity: 1,
+                    color: 'white',
+                    dashArray: '1',
+                    fillOpacity: 0.7,
+                    fillColor: getColor(feature.properties.provincia)
+                };
+            }
+
+            
+            function highlightFeature(e) {
+		        var layer = e.target;
+
+                layer.setStyle({
+                    weight: 5,
+                    color: '#666',
+                    dashArray: '',
+                    fillOpacity: 0.7
+                });
+
+                if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                    layer.bringToFront();
+                }
+
+                info.update(layer.feature.properties);
+            }
+                info.addTo(map);
+
+                var geojson;
+
+                function resetHighlight(e) {
+                    geojson.resetStyle(e.target);
+                    info.update();
+                }
+
+                function zoomToFeature(e) {
+                    map.fitBounds(e.target.getBounds());
+                }
+
+                function onEachFeature(feature, layer) {
+                    layer.on({
+                        mouseover: highlightFeature,
+                        mouseout: resetHighlight,
+                        click: zoomToFeature
+                    });
+                }
+
+                geojson = L.geoJson(polReg, {
+                    onEachFeature: onEachFeature
+                }).addTo(map);
+
+       </script> 
+    </body>
+</html>

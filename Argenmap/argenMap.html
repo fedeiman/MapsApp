@@ -12,7 +12,7 @@
        
        <script src="departamentos-argentina.js"></script>
 
-       <script src="Poligono_Cuyo_gpx.js"></script>
+       <script src="Poligono_Regiones_gpx.js"></script>
 
        <script>
             function httpGet(theUrl){
@@ -44,17 +44,22 @@
                 document.getElementById("prov").innerHTML = obj.ubicacion.provincia.nombre;
             }
 
-           /* button.onAdd = function (map) {
-                var div = L.DomUtil.create('div','button');
-                div.innerHTML = '<button onclick ="fun()">DATOS</button>'+
-                '<p> La latitud es:</p>' + '<p id="lat"></p>' +
-                '<p> La longitud es:</p>' + '<p id="lon"></p>'+
-                '<p> El depto es:</p>' + '<p id="depto"></p>' +
-                '<p> El municipio es:</p>' + '<p id="muni"></p>' +
-                '<p> La provincia es:</p>' + '<p id="prov"></p>' 
-
-                return div;
-            }*/
+            function funcion(){
+                geojson = L.geoJson(polReg, {
+                    style: style,
+                    onEachFeature: onEachFeature
+                }).addTo(map);
+                //map.setView([-35,-50], 7);
+            }
+           button.onAdd = function (map) {
+                var div = L.DomUtil.create('div','select');
+                div.innerHTML ='<a href=regMap.html>'+
+                    '<button>'+
+                    'Regiones'+
+                    '</button>'+
+                    '</a>'
+               return div;
+            }
            
             info.update = function (props) {
 		        this._div.innerHTML = '<h4>Ubicacion</h4>' +  (props ?
@@ -149,7 +154,7 @@
             }
 
                 info.addTo(map);
-//                button.addTo(map);
+                button.addTo(map);
 
                 var geojson;
 
