@@ -9,8 +9,6 @@
     </head>
     <body>
        <div id = "map"></div>
-       
-       <script src="departamentos-argentina.js"></script>
 
        <script src="Poligono_Cuyo_gpx.js"></script>
 
@@ -30,50 +28,9 @@
            
            info.update = function (props) {
 		        this._div.innerHTML = '<h4>Ubicacion</h4>' +  (props ?
-			        '<b>' + props.provincia + '</b><br />' + props.departamento + '</b><br />'
-			        : 'Mueva el cursor sobre un departamento');
+			        '<b>' + props.Name + '</b><br />'
+			        : 'Mueva el cursor sobre una región');
             };
-
-
-            // get color depending on province name
-            function getColor(d) {
-                if (d == "CORDOBA" || d == "SANTA CRUZ") {
-                    return '#808000'
-                }
-                if (d == "FORMOSA" || d == "TIERRA DEL FUEGO") {
-                    return '#FFA233'
-                }
-                if (d == "SANTA FE" || d == "CHUBUT") {
-                    return '#33FFF3'
-                }
-                if (d == "SALTA" || d == "NEUQUEN") {
-                    return '#F033FF'
-                }
-                if (d == "JUJUY" || d == "MENDOZA") {
-                    return '#33FF96'
-                }
-                if (d == "CATAMARCA" || d == "SAN LUIS") {
-                    return '#FF3333'
-                }
-                if (d == "RIO NEGRO" || d == "SAN JUAN") {
-                    return '#33FFC4'
-                }
-                if (d == "BUENOS AIRES" || d == "MISIONES") {
-                    return '#FF9633'
-                }
-                if (d == "CORRIENTES" || d == "LA RIOJA") {
-                    return '#E6FF33'
-                }
-                if (d == "LA PAMPA" || d == "CHACO") {
-                    return '#338DFF'
-                }
-                if (d == "SANTIAGO DEL ESTERO" || d == "ENTRE RIOS") {
-                    return '#4CFF33'
-                }
-                if (d == "TUCUMAN" || d == "CIUDAD AUTONOMA DE BUENOS AIRES") {
-                    return '#33FF74'
-                }          
-            }
 
             function style(feature) {
                 //alert(feature.properties.provincia);
@@ -125,8 +82,7 @@
                     });
                 }
 
-                geojson = L.geoJson(deptos, {
-                    style: style,
+                geojson = L.geoJson(polCuyo, {
                     onEachFeature: onEachFeature
                 }).addTo(map);
 
