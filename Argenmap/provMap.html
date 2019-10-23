@@ -14,7 +14,16 @@
 
        <script src="Poligono_CABA.js"></script>
 
+       <script src="datos.js"></script>
+
+
        <script>
+            function httpGet(theUrl){
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+                xmlHttp.send( null );
+                return xmlHttp.responseText;
+            }; 
            var map = L.map('map').setView([-33, -65], 7);
            L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=PEfhgiKYelWbSwWuPals',{
                attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">© MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">© OpenStreetMap contributors</a>',
@@ -22,6 +31,17 @@
            
            var info = L.control();
 
+           function data(){
+                for(var dato in datos){
+                    if(datos[dato][1].toUpperCase() == obj.ubicacion.provincia.nombre.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "" )){
+                        document.getElementById("fecha").innerHTML = datos[dato][0];
+                        document.getElementById("empleo").innerHTML = datos[dato][2];
+                        document.getElementById("indigencia").innerHTML = datos[dato][4]+'%';
+                        document.getElementById("salario").innerHTML = '$'+datos[dato][5];
+                        document.getElementById("pobre").innerHTML = datos[dato][3]+'%';
+                    }
+                }      
+            }
            info.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'info');
                 this.update();
@@ -31,7 +51,12 @@
            info.update = function (props) {
 		        this._div.innerHTML = '<h4>Ubicacion</h4>' +  (props ?
 			        '<b>' + props.Name + '</b><br />'
-			        : 'Mueva el cursor sobre una región');
+                    : 'Mueva el cursor sobre una región')+
+                '<p> La pobreza promedio es:</p>' + '<p id="pobre"></p>' +
+                '<p> El empleo total es:</p>' + '<p id="empleo"></p>' +
+                '<p> La indigencia promedio es:</p>' + '<p id="indigencia"></p>' +
+                '<p> El salario bruto promedio es:</p>' + '<p id="salario"></p>' +
+                '<p> La fecha de los datos es:</p>' + '<p id="fecha"></p>'
             };
 
             function style(feature) {
@@ -102,6 +127,15 @@
                 }
 
                 info.update(layer.feature.properties);
+                prov_dep ="https://apis.datos.gob.ar/georef/api/provincias?nombre="+layer.feature.properties.Name;
+                json = httpGet(prov_dep);
+                obj = JSON.parse(json);
+                lat = obj.provincias[0].centroide.lat;
+                lon = obj.provincias[0].centroide.lon;
+                coordenadas = "https://apis.datos.gob.ar/georef/api/ubicacion?lat="+lat+"&lon="+lon;
+                json = httpGet(coordenadas);
+                obj = JSON.parse(json); // parse a txt
+                data()
             }
                 info.addTo(map);
 

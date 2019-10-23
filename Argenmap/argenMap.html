@@ -39,17 +39,6 @@
                 return this._div;
             };
 
-            function data(){
-                for(var dato in datos){
-                    if(datos[dato][1].toUpperCase() == obj.ubicacion.provincia.nombre.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")){
-                        document.getElementById("fecha").innerHTML = datos[dato][0];
-                        document.getElementById("empleo").innerHTML = datos[dato][2];
-                        document.getElementById("indigencia").innerHTML = datos[dato][4]+'%';
-                        document.getElementById("salario").innerHTML = '$'+datos[dato][5];
-                        document.getElementById("pobre").innerHTML = datos[dato][3]+'%';
-                    }
-                }      
-            }
             function fun (){
                 document.getElementById("lat").innerHTML = obj.ubicacion.lat;
                 document.getElementById("lon").innerHTML = obj.ubicacion.lon;
@@ -68,9 +57,9 @@
             }
            button.onAdd = function (map) {
                 var div = L.DomUtil.create('div','select');
-                div.innerHTML ='<a href=regMap.html>'+
+                div.innerHTML ='<a href=provMap.html>'+
                     '<button>'+
-                    'Regiones'+
+                    'Provincias'+
                     '</button>'+
                     '</a>'
                return div;
@@ -84,12 +73,7 @@
                 '<p> La longitud es:</p>' + '<p id="lon"></p>'+
                 '<p> El depto es:</p>' + '<p id="depto"></p>' +
                 '<p> El municipio es:</p>' + '<p id="muni"></p>' +
-                '<p> La provincia es:</p>' + '<p id="prov"></p>' +
-                '<p> La pobreza promedio es:</p>' + '<p id="pobre"></p>' +
-                '<p> El empleo total es:</p>' + '<p id="empleo"></p>' +
-                '<p> La indigencia promedio es:</p>' + '<p id="indigencia"></p>' +
-                '<p> El salario bruto promedio es:</p>' + '<p id="salario"></p>' +
-                '<p> La fecha de los datos es:</p>' + '<p id="fecha"></p>'
+                '<p> La provincia es:</p>' + '<p id="prov"></p>' 
             };
             
             // get color depending on province name
@@ -171,7 +155,6 @@
                 json = httpGet(coordenadas);
                 obj = JSON.parse(json); // parse a txt
                 fun()
-                data()
             }
 
                 info.addTo(map);
