@@ -33,7 +33,7 @@
 
            function data(){
                 for(var dato in datos){
-                    if(datos[dato][1].toUpperCase() == obj.ubicacion.provincia.nombre.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "" )){
+                    if(datos[dato][1].toUpperCase() == obj.parametros.nombre.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "" )){
                         document.getElementById("fecha").innerHTML = datos[dato][0];
                         document.getElementById("empleo").innerHTML = datos[dato][2];
                         document.getElementById("indigencia").innerHTML = datos[dato][4]+'%';
@@ -130,11 +130,11 @@
                 prov_dep ="https://apis.datos.gob.ar/georef/api/provincias?nombre="+layer.feature.properties.Name;
                 json = httpGet(prov_dep);
                 obj = JSON.parse(json);
-                lat = obj.provincias[0].centroide.lat;
+                /*lat = obj.provincias[0].centroide.lat;
                 lon = obj.provincias[0].centroide.lon;
                 coordenadas = "https://apis.datos.gob.ar/georef/api/ubicacion?lat="+lat+"&lon="+lon;
                 json = httpGet(coordenadas);
-                obj = JSON.parse(json); // parse a txt
+                obj = JSON.parse(json); // parse a txt*/
                 data()
             }
                 info.addTo(map);
