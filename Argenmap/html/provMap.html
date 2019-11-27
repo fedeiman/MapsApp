@@ -31,6 +31,7 @@
            }).addTo(map);
            
            var info = L.control();
+           var button = L.control({position: 'bottomright'});
 
            function data(){
                 for(var dato in datos){
@@ -42,6 +43,15 @@
                         document.getElementById("pobre").innerHTML = datos[dato][3]+'%';
                     }
                 }      
+            }
+            button.onAdd = function (map) {
+                var div = L.DomUtil.create('div','select');
+                div.innerHTML ='<a href=/home/federico/Escritorio/Unx/MapsApp/Argenmap/html/argenMap.html>'+
+                    '<button>'+
+                    'Departametos'+
+                    '</button>'+
+                    '</a>'
+               return div;
             }
            info.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'info');
@@ -131,14 +141,10 @@
                 prov_dep ="https://apis.datos.gob.ar/georef/api/provincias?nombre="+layer.feature.properties.Name;
                 json = httpGet(prov_dep);
                 obj = JSON.parse(json);
-                /*lat = obj.provincias[0].centroide.lat;
-                lon = obj.provincias[0].centroide.lon;
-                coordenadas = "https://apis.datos.gob.ar/georef/api/ubicacion?lat="+lat+"&lon="+lon;
-                json = httpGet(coordenadas);
-                obj = JSON.parse(json); // parse a txt*/
                 data()
             }
                 info.addTo(map);
+                button.addTo(map);
 
                 var geojson;
 

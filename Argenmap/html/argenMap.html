@@ -16,6 +16,8 @@
 
        <script src="/home/federico/Escritorio/Unx/MapsApp/Argenmap/Datos/datos.js"></script>
 
+       <script src="/home/federico/Escritorio/Unx/MapsApp/Argenmap/Datos/datosCba.js"></script>
+
 
        <script>
             function httpGet(theUrl){
@@ -32,6 +34,22 @@
            
             var info = L.control();
             var button = L.control({position: 'bottomright'});
+            function data(){
+                for(var dato in datosCba){
+                    if((datosCba[dato][0].toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") == obj.ubicacion.departamento.nombre.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") &&(obj.ubicacion.provincia.nombre == "Córdoba"))){
+                        document.getElementById("poblacion").innerHTML = datosCba[dato][1];
+                        document.getElementById("mas18").innerHTML = datosCba[dato][2]+"%";
+                        document.getElementById("poblacion_inac").innerHTML = datosCba[dato][3];
+                        document.getElementById("pbr").innerHTML = '$'+datosCba[dato][4];
+                    }
+                    if(obj.ubicacion.provincia.nombre != "Córdoba"){
+                        document.getElementById("poblacion").innerHTML = "No hay datos";
+                        document.getElementById("mas18").innerHTML = "No hay datos";
+                        document.getElementById("poblacion_inac").innerHTML = "No hay datos";
+                        document.getElementById("pbr").innerHTML = "No hay datos";
+                    }
+                }      
+            }
 
             info.onAdd = function (map) {
                 this._div = L.DomUtil.create('div', 'info');
@@ -73,7 +91,11 @@
                 '<p> La longitud es:</p>' + '<p id="lon"></p>'+
                 '<p> El depto es:</p>' + '<p id="depto"></p>' +
                 '<p> El municipio es:</p>' + '<p id="muni"></p>' +
-                '<p> La provincia es:</p>' + '<p id="prov"></p>' 
+                '<p> La provincia es:</p>' + '<p id="prov"></p>'+
+                '<p> La poblacion es: </p>'+ '<p id="poblacion"></p>'+
+                '<p> Porcentaje mayores de 18 con el secundario completo: </p>' + '<p id="mas18"></p>'+
+                '<p> Poblacion inactiva: </p>' + '<p id="poblacion_inac"></p>'+
+                '<p> PBR percapita: </p>' + '<p id="pbr"></p>'
             };
             
             // get color depending on province name
@@ -155,6 +177,7 @@
                 json = httpGet(coordenadas);
                 obj = JSON.parse(json); // parse a txt
                 fun()
+                data()
             }
 
                 info.addTo(map);
