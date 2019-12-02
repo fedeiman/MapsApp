@@ -2,7 +2,7 @@ const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const btoa = require("btoa");
 const wml_credentials = new Map();
 var request = require( 'request' );
-
+var iam_token
 // Paste your Watson Machine Learning service apikey here
 
 
@@ -31,7 +31,7 @@ var options = { url     : "https://iam.bluemix.net/oidc/token",
 
 request.post( options, function( error, response, body )
 {
-	var iam_token = JSON.parse( body )["access_token"];
+	iam_token = JSON.parse( body )["access_token"];
 } );
 // NOTE: generate iam_token based on provided documentation
 const wmlToken = "Bearer " + iam_token;
