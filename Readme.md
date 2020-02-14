@@ -59,5 +59,4 @@
 
 y así devolver una predición.
 
-## Para poner en funcionamiento en tu PC:
-cambiar la direccion o directorio en los archivos provMap.html y argenMap.html a la dirreccion o directorio en tu PC
+
